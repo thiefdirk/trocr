@@ -13,12 +13,16 @@ from .configs import paths
 from .configs import constants
 from .util import debug_print
 
+def utf_8_encoder(unicode_csv_data):
+    for line in unicode_csv_data:
+        yield line.encode('cp949')
+
 
 def load_csv_labels(csv_path: Path = paths.label_file) -> dict[str, str]:
     assert csv_path.exists(), f"Label csv at {csv_path} does not exist."
 
     labels: dict[str, str] = {}
-    with open(csv_path, "r") as f:
+    with open(csv_path, "rt", encoding='UTF-8') as f:
         reader = csv.reader(f, delimiter=",")
         for row in reader:
             label = row[1]
